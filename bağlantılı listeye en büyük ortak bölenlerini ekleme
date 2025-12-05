@@ -1,0 +1,79 @@
+public class basak {
+    int no;
+    basak ileri;
+    public basak(int val){
+        this.no=val;
+        this.ileri=null;
+    }
+}
+
+public class Main {
+
+    public class ObebEklemeCozumu {
+
+        private int ebob(int a, int b) {
+            while (b != 0) {
+                int temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+
+        public basak ekleObeb(basak head) {
+            basak yedek = head;
+
+            while (yedek != null && yedek.ileri != null) {
+
+                basak next = yedek.ileri;
+                int obebDegeri = ebob(yedek.no, next.no);
+
+                basak yeniObebDugumu = new basak(obebDegeri);
+
+                yeniObebDugumu.ileri = next;
+               yedek.ileri = yeniObebDugumu;
+
+                
+               yedek = next;
+            }
+
+            return head;
+        }
+    }
+
+    public static void printList(basak head) {
+        basak temp = head;
+        System.out.print("Liste: ");
+        while (temp != null) {
+            System.out.print(temp.no);
+            if (temp.ileri != null) {
+                System.out.print(" -> ");
+            }
+            temp = temp.ileri;
+        }
+        System.out.println();
+    }
+
+
+    public static void main(String[] args) {
+
+        basak listeBasi = new basak(18);
+        listeBasi.ileri = new basak(6);
+        listeBasi.ileri.ileri = new basak(10);
+        listeBasi.ileri.ileri.ileri = new basak(3);
+
+        System.out.println("--- Başlangıç Durumu ---");
+        printList(listeBasi);
+a
+        Main mainInstance = new Main();
+        ObebEklemeCozumu cozumleyici = mainInstance.new ObebEklemeCozumu();
+
+        // EBOB ekleme metodunu çağırma
+        basak sonucListe = cozumleyici.ekleObeb(listeBasi);
+
+        System.out.println("\n--- Sonuç Durumu ---");
+        printList(sonucListe);
+
+      
+    }
+}
