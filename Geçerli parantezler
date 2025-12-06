@@ -1,3 +1,12 @@
+/*Sadece , , , , ve karakterleri içeren bir diziye verildiğinde, giriş dizisinin geçerli olup olmadığını belirler.s'('')''{''}''['']'
+
+Bir giriş dizisi geçerliydi şöyle:
+
+Açık parantezler aynı tür parantezlerle kapatılmalıdır.
+Açık parantezler doğru sırayla kapatılmalıdır.
+Her kapanış parantezinin aynı türden bir açık parantez vardır.*/
+
+
 // Stack sınıfı
 public class Stack {
     private int maxSize;
