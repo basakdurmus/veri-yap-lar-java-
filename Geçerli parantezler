@@ -1,0 +1,88 @@
+// Stack sınıfı
+public class Stack {
+    private int maxSize;
+    private char[] stackArray;
+    private int top;
+
+    // Constructor
+    public Stack(int size) {
+        maxSize = size;
+        stackArray = new char[maxSize];
+        top = -1;
+    }
+
+    // Push
+    public void push(char value) {
+        if (top == maxSize - 1) {
+            System.out.println("Stack dolu!");
+        } else {
+            stackArray[++top] = value;
+        }
+    }
+
+    // Pop
+    public char pop() {
+        if (top == -1) {
+            System.out.println("Stack bos!");
+            return ' ';
+        } else {
+            return stackArray[top--];
+        }
+    }
+
+    // Peek
+    public char peek() {
+        if (top == -1) {
+            return ' ';
+        } else {
+            return stackArray[top];
+        }
+    }
+
+    public boolean isEmpty() {
+        return (top == -1);
+    }
+}
+public class Main {
+    public class ParantezKontrol {
+        public static boolean kontrol(String ifade) {
+            Stack stack = new Stack(ifade.length());
+
+            for (int i = 0; i < ifade.length(); i++) {
+                char ch = ifade.charAt(i);
+
+                if (ch == '(' || ch == '{' || ch == '[') {
+                    stack.push(ch);
+                } else if (ch == ')' || ch == '}' || ch == ']') {
+                    if (stack.isEmpty()) return false;
+                    char top = stack.pop();
+
+                    if ((ch == ')' && top != '(') ||
+                            (ch == '}' && top != '{') ||
+                            (ch == ']' && top != '[')) {
+                        return false;
+                    }
+                }
+            }
+            return stack.isEmpty();
+        }
+    }
+
+
+            public static void main(String[] args) {
+                String ifade1 = "{[()]}";
+                String ifade2 = "{[(])}";
+                String ifade3 = "((()))";
+                String ifade4 = "(()";
+
+                System.out.println(ifade1 + " -> " + ParantezKontrol.kontrol(ifade1));
+                System.out.println(ifade2 + " -> " + ParantezKontrol.kontrol(ifade2));
+                System.out.println(ifade3 + " -> " + ParantezKontrol.kontrol(ifade3));
+                System.out.println(ifade4 + " -> " + ParantezKontrol.kontrol(ifade4));
+            }
+        }
+
+
+
+
+
