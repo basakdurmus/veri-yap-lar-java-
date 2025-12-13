@@ -1,0 +1,77 @@
+// LeetCode'da genellikle sağlanan Düğüm sınıfı
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public int[][] spiralMatrix(int m, int n, ListNode head) {
+        
+        // 1. Matrisi -1 ile doldurarak başlatma
+        int[][] matrix = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = -1;
+            }
+        }
+        
+        // Sınır değişkenlerinin belirlenmesi
+        int ust_sinir = 0;
+        int alt_sinir = m - 1;
+        int sol_sinir = 0;
+        int sag_sinir = n - 1;
+        
+        ListNode mevcutDugum = head;
+        
+        // 2. Spiral Gezinme Döngüsü
+        while (mevcutDugum != null && ust_sinir <= alt_sinir && sol_sinir <= sag_sinir) {
+            
+            // A. SAĞ HAREKET (Üst Satırda, Soldan Sağa)
+            for (int j = sol_sinir; j <= sag_sinir; j++) {
+                if (mevcutDugum == null) break; // Liste bittiyse dur
+                matrix[ust_sinir][j] = mevcutDugum.val;
+                mevcutDugum = mevcutDugum.next;
+            }
+            ust_sinir++; // Üst sınırı daralt
+
+            if (mevcutDugum == null) break;
+            if (ust_sinir > alt_sinir) break; // Sınır kontrolü
+            
+            // B. AŞAĞI HAREKET (Sağ Sütunda, Yukarıdan Aşağıya)
+            for (int i = ust_sinir; i <= alt_sinir; i++) {
+                if (mevcutDugum == null) break;
+                matrix[i][sag_sinir] = mevcutDugum.val;
+                mevcutDugum = mevcutDugum.next;
+            }
+            sag_sinir--; // Sağ sınırı daralt
+            
+            if (mevcutDugum == null) break;
+            if (sol_sinir > sag_sinir) break; // Sınır kontrolü
+            
+            // C. SOL HAREKET (Alt Satırda, Sağdan Sola)
+            for (int j = sag_sinir; j >= sol_sinir; j--) {
+                if (mevcutDugum == null) break;
+                matrix[alt_sinir][j] = mevcutDugum.val;
+                mevcutDugum = mevcutDugum.next;
+            }
+            alt_sinir--; // Alt sınırı daralt
+            
+            if (mevcutDugum == null) break;
+            if (ust_sinir > alt_sinir) break; // Sınır kontrolü
+
+            // D. YUKARI HAREKET (Sol Sütunda, Aşağıdan Yukarıya)
+            for (int i = alt_sinir; i >= ust_sinir; i--) {
+                if (mevcutDugum == null) break;
+                matrix[sol_sinir][i] = mevcutDugum.val; // Hata düzeltildi: [i][sol_sinir] olmalı
+                mevcutDugum = mevcutDugum.next;
+            }
+            sol_sinir++; // Sol sınırı daralt
+            
+            if (mevcutDugum == null) break;
+            if (sol_sinir > sag_sinir) break; // Sınır kontrolü
+        }
+        
+        return matrix;
+    }
+}
