@@ -1,0 +1,109 @@
+// 1. DÜĞÜM SINIFI TANIMLAMASI
+class Node {
+    int data;
+    Node ileri; 
+
+    public Node(int data) {
+        this.data = data;
+        this.ileri = null;
+    }
+}
+
+public class Main {
+    
+    // YARDIMCI METOT: Bağlı listeyi ters çevirir. (Zorunlu Adım)
+    private Node listeyiTersCevir(Node bas) {
+        Node onceki = null;
+        Node mevcut = bas;
+        Node sonraki = null;
+        while (mevcut != null) {
+            sonraki = mevcut.ileri; // Bir sonraki düğümü kaydet
+            mevcut.ileri = onceki;  // Mevcut düğümün yönünü ters çevir
+            onceki = mevcut;        // Onceki'yi mevcut düğüme ilerlet
+            mevcut = sonraki;       // Mevcut'u bir sonraki düğüme ilerlet
+        }
+        return onceki; // Yeni baş (ters listenin ilk düğümü)
+    }
+
+
+    // 3. LİSTEDE SAĞINDA BÜYÜK OLANLARI SİLME METODU
+    public Node aynisiSil(Node list) { 
+        
+        // Adım 1: Listeyi Ters Çevir (Sağdan Sola Gezinmeye Başlamak İçin)
+        Node tersBas = listeyiTersCevir(list);
+        
+        // Adım 2: Ters Listede Tek Geçiş Yaparak Maksimum Değeri Takip Et
+        Node onceki = null;
+        Node mevcut = tersBas;
+        
+        // Listede şimdiye kadar gördüğümüz en büyük değer (sağımızdaki en büyük değer)
+        // İlk düğüm listenin en sağındaki düğüm olduğu için onu tutarız.
+        int maksimumDeger = Integer.MIN_VALUE;
+
+        while (mevcut != null) {
+            
+            // Eğer mevcut düğüm, şimdiye kadar gördüğümüz en büyük değerden daha büyükse/eşitse:
+            if (mevcut.data >= maksimumDeger) {
+                
+                // Bu düğüm tutulmalı, çünkü sağında (orijinalde) kendisinden büyük kimse yoktur.
+                // Maksimum değeri güncelle ve bir sonraki adıma geç.
+                maksimumDeger = mevcut.data;
+                onceki = mevcut; // 'onceki' silinmeyen en son düğümü tutar.
+                mevcut = mevcut.ileri;
+                
+            } else {
+                
+                // Eğer mevcut düğüm, Maksimum Değer'den küçükse:
+                // Bu düğüm sağında kendisinden büyük biri olduğu için kaldırılmalıdır.
+                // ** SİLME İŞLEMİ **
+                onceki.ileri = mevcut.ileri; // Silinecek düğümü (mevcut) atla.
+                
+                // DÜZELTME: Mevcut düğüm silindikten sonra, 'onceki' yerinde kalır.
+                // 'mevcut' değişkeni ise silinen düğümün (onceki.ileri'nin) yeni ilerisine eşitlenir.
+                // Bu, zincirde boşluk bırakmadan devam etmeyi sağlar.
+                Node silinenDugum = mevcut;
+                mevcut = mevcut.ileri;
+                
+                // Java'da otomatik bellek temizleme olduğu için silinenDugum = null gerekmez.
+            }
+        }
+        
+        // Adım 3: Listeyi Tekrar Ters Çevir (Orijinal Sıraya Getirmek İçin)
+        // Artık silinmiş olan liste (tersBas), ters çevrilerek doğru çıktıyı verir.
+        return listeyiTersCevir(tersBas);
+    }
+
+    // 2. LİSTEYİ YAZDIRMA METODU
+    public void listeyiYazdir(Node bas) {
+        Node gecici = bas;
+        while (gecici != null) {
+            System.out.print(gecici.data + " -> ");
+            gecici = gecici.ileri;
+        }
+        System.out.println("NULL");
+    }
+
+    public static void main(String[] args) {
+
+        Main programNesnesi = new Main(); 
+
+        // Bağlı Liste Oluşturma (24 -> 34 -> 23 -> 36 -> 67)
+        Node listeBas = new new Node(24);
+        listeBas.ileri = new Node(34);
+        listeBas.ileri.ileri = new Node(23);
+        listeBas.ileri.ileri.ileri = new Node(36);
+        listeBas.ileri.ileri.ileri.ileri = new Node(67);
+
+        System.out.print("Orijinal Liste: ");
+        programNesnesi.listeyiYazdir(listeBas); 
+        // Çıktı: 24 -> 34 -> 23 -> 36 -> 67 -> NULL
+
+        // Silme Metodunu Çalıştırma
+        Node yeniBas = programNesnesi.aynisiSil(listeBas);
+
+        System.out.print("Silinmiş Liste: ");
+        programNesnesi.listeyiYazdir(yeniBas);
+        
+        // Beklenen Çıktı: 67 -> NULL
+    }
+}
