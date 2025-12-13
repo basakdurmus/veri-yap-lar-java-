@@ -1,0 +1,99 @@
+
+
+class Dugum {
+    int veri;
+    Dugum sonraki; 
+
+    public Dugum(int veri) {
+        this.veri = veri;
+        this.sonraki = null;
+    }
+}
+
+public class Main { 
+
+    private boolean dizideVarMi(int aranacakVeri, int[] silinecekDizi) {
+        for (int eleman : silinecekDizi) {
+            if (aranacakVeri == eleman) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+ 
+    public Dugum ayniOlanlariSil(Dugum basDugum, int[] silinecekDizi) { 
+        
+       
+        
+        Dugum sahteBas = new Dugum(0);
+        sahteBas.sonraki = basDugum; 
+        
+        
+        Dugum mevcut = basDugum; 
+        
+       
+        Dugum onceki = sahteBas;
+
+        
+        while (mevcut != null) {
+            
+          
+            if (dizideVarMi(mevcut.veri, silinecekDizi)) {
+                
+                // ** SİLME İŞLEMİ **
+                // Silinecek düğümü (mevcut) atla.
+                // Yani, onceki'nin 'sonraki' referansını, mevcut'un 'sonraki'sine bağla.
+                onceki.sonraki = mevcut.sonraki;
+                
+                // Silme işleminden sonra, 'onceki' yerinde kalır. 
+                // 'mevcut' ise 'onceki'nin yeni sonraki'sine eşitlenir.
+                // Bu, referansları kaybetmeden zinciri doğru ilerletir.
+                mevcut = onceki.sonraki; 
+                
+            } else {
+                // ** TUTMA İŞLEMİ **
+                // Eleman silinmeyecekse, onceki ve mevcut'u bir adım ileri taşı.
+                onceki = mevcut;
+                mevcut = mevcut.sonraki;
+            }
+        }
+        
+        // Gerçek listenin başlangıcı sahte düğümden sonraki düğümdür.
+        return sahteBas.sonraki;
+    }
+
+    // 4. ANA METOT
+    public static void main(String[] args) {
+        
+        AnaProgram programNesnesi = new AnaProgram();
+        
+        // Bağlı Liste Oluşturma (1 -> 2 -> 3 -> 4 -> 5)
+        Dugum listeBas = new Dugum(1); // 'list' yerine 'listeBas'
+        listeBas.sonraki = new Dugum(2);
+        listeBas.sonraki.sonraki = new Dugum(3);
+        listeBas.sonraki.sonraki.sonraki = new Dugum(4);
+        listeBas.sonraki.sonraki.sonraki.sonraki = new Dugum(5);
+        
+        int[] silinecek = {2, 4};
+
+        System.out.print("Orijinal Liste: ");
+        programNesnesi.listeyiYazdir(listeBas); // 1 2 3 4 5
+        
+        // Silme Metodunu Çalıştırma
+        Dugum yeniListe = programNesnesi.ayniOlanlariSil(listeBas, silinecek);
+        
+        System.out.print("Silinmiş Liste: ");
+        programNesnesi.listeyiYazdir(yeniListe); // Beklenen: 1 3 5
+    }
+    
+    // 5. YARDIMCI METOT: Bağlı Listeyi Yazdırma
+    private void listeyiYazdir(Dugum bas) {
+        Dugum gecici = bas; // 'temp' yerine 'gecici'
+        while (gecici != null) {
+            System.out.print(gecici.veri + " ");
+            gecici = gecici.sonraki;
+        }
+        System.out.println();
+    }
+}
