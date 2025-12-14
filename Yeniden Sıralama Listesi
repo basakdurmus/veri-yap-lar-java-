@@ -1,0 +1,51 @@
+class ListNode {
+    int deger;
+    ListNode sonraki;
+
+    ListNode(int deger) {
+        this.deger = deger;
+        this.sonraki = null;
+    }
+}
+
+class Solution {
+    public void reorderList(ListNode bas) {
+        if (bas == null || bas.sonraki == null) return;
+
+        // 1️ Ortayı bul
+        ListNode yavas = bas;
+        ListNode hizli = bas;
+
+        while (hizli != null && hizli.sonraki != null) {
+            yavas = yavas.sonraki;
+            hizli = hizli.sonraki.sonraki;
+        }
+
+        // 2️ İkinci yarıyı ters çevir
+        ListNode onceki = null;
+        ListNode simdiki = yavas.sonraki;
+        yavas.sonraki = null; // listeyi ikiye böl
+
+        while (simdiki != null) {
+            ListNode sonraki = simdiki.sonraki;
+            simdiki.sonraki = onceki;
+            onceki = simdiki;
+            simdiki = sonraki;
+        }
+
+        // 3️ İki listeyi sırayla birleştir
+        ListNode ilk = bas;
+        ListNode ikinci = onceki;
+
+        while (ikinci != null) {
+            ListNode ilkSonraki = ilk.sonraki;
+            ListNode ikinciSonraki = ikinci.sonraki;
+
+            ilk.sonraki = ikinci;
+            ikinci.sonraki = ilkSonraki;
+
+            ilk = ilkSonraki;
+            ikinci = ikinciSonraki;
+        }
+    }
+}
