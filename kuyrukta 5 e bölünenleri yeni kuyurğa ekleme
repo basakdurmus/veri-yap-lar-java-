@@ -1,0 +1,72 @@
+public class Node {
+    int data;
+    Node next;
+
+    public Node(int data){
+        this.data=data;
+        next=null;
+
+    }
+}
+
+public class Main {
+    static class MYQueue {
+        Node front, rear;
+
+        // Kuyruğa eleman ekleme (Enqueue)
+        public void enqueue(int data) {
+            Node newNode = new Node(data);
+            if (rear == null) {
+                front = rear = newNode;
+                return;
+            }
+            rear.next = newNode;
+            rear = newNode;
+        }
+
+        // 5'e bölünenleri yeni bir kuyruğa toplayan metot
+        public MYQueue beseBolunenleriAyir() {
+            MYQueue yeniKuyruk = new MYQueue();
+            Node temp = this.front; // Mevcut kuyruğun başından başla
+
+            while (temp != null) {
+                if (temp.data % 5 == 0) {
+                    yeniKuyruk.enqueue(temp.data); // Şart sağlanıyorsa yeni kuyruğa ekle
+                }
+                temp = temp.next; // Bir sonraki düğüme geç
+            }
+            return yeniKuyruk;
+        }
+
+        // Kuyruğu ekrana yazdırmak için yardımcı metot
+        public void yazdir() {
+            Node temp = front;
+            while (temp != null) {
+                System.out.print(temp.data + " -> ");
+                temp = temp.next;
+            }
+            System.out.println("null");
+        }
+    }
+
+    public static void main(String[] args) {
+
+                MYQueue anaKuyruk = new MYQueue();
+
+                // Verileri ekleyelim
+                anaKuyruk.enqueue(10);
+                anaKuyruk.enqueue(7);
+                anaKuyruk.enqueue(15);
+                anaKuyruk.enqueue(22);
+                anaKuyruk.enqueue(30);
+
+                System.out.print("Ana Kuyruk: ");
+                anaKuyruk.yazdir();
+
+                // Metodu çağırıyoruz
+                MYQueue beslerKuyrugu = anaKuyruk.beseBolunenleriAyir();
+
+                System.out.print("5'e Bölünenler Kuyruğu: ");
+                beslerKuyrugu.yazdir();
+            }
+        }
