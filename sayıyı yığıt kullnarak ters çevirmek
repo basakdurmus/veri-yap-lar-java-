@@ -1,0 +1,35 @@
+import java.util.Stack;
+
+public class AlgoritmaSorusu {
+
+    public static int ters_cevir(int sayi) {
+        // Rakamları tutmak için bir Integer yığıtı oluşturuyoruz
+        Stack<Integer> yigit = new Stack<>();
+
+        // 1. Adım: Sayının basamaklarını tek tek yığıta ekle (Push)
+        // Örn: 6899 için yığıta sırasıyla 9, 9, 8, 6 girer.
+        int gecici = sayi;
+        while (gecici > 0) {
+            yigit.push(gecici % 10);
+            gecici = gecici / 10;
+        }
+
+        int tersSayi = 0;
+        int katsayi = 1;
+
+        // 2. Adım: Yığıttan elemanları çıkar (Pop) ve yeni sayıyı oluştur
+        // LIFO (Son Giren İlk Çıkar) prensibi gereği en son giren '6' ilk çıkar.
+        while (!yigit.isEmpty()) {
+            tersSayi += yigit.pop() * katsayi;
+            katsayi *= 10;
+        }
+
+        return tersSayi;
+    }
+
+    public static void main(String[] args) {
+        int girdi = 6899;
+        int sonuc = ters_cevir(girdi);
+        System.out.println("Girdi: " + girdi + " -> Döndürülen: " + sonuc);
+    }
+}
