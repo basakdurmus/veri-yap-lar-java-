@@ -35,3 +35,68 @@ public class ManuelKontrolListe {
         System.out.println(liste);
     }
 }
+
+//2.kod 
+
+
+import java.util.Random;
+
+// 1. Kendi Düğüm (Node) yapımızı tanımlıyoruz
+class Dugum {
+    int veri;
+    Dugum sonraki;
+
+    Dugum(int veri) {
+        this.veri = veri;
+        this.sonraki = null;
+    }
+}
+
+public class ManuelBagliListe {
+    public static void main(String[] args) {
+        Dugum bas = null; // Listenin başlangıç noktası
+        int elemanSayisi = 0;
+        Random rastgele = new Random();
+
+        while (elemanSayisi < 20) {
+            int uretilenSayi = rastgele.nextInt(100) + 1;
+            
+            // 2. Kontrol: Sayı listede var mı? (Manuel Tarama)
+            boolean varMi = false;
+            Dugum gecici = bas; // Listenin başına git
+            
+            while (gecici != null) {
+                if (gecici.veri == uretilenSayi) {
+                    varMi = true; // Sayı bulundu
+                    break;
+                }
+                gecici = gecici.sonraki; // Sonraki düğüme geç
+            }
+
+            // 3. Eğer sayı yoksa listeye ekle
+            if (!varMi) {
+                Dugum yeniDugum = new Dugum(uretilenSayi);
+                
+                if (bas == null) {
+                    bas = yeniDugum; // Liste boşsa ilk eleman bu olsun
+                } else {
+                    // Listenin sonuna git ve ekle
+                    Dugum son = bas;
+                    while (son.sonraki != null) {
+                        son = son.sonraki;
+                    }
+                    son.sonraki = yeniDugum;
+                }
+                elemanSayisi++; // Başarıyla eklendiği için sayacı artır
+            }
+        }
+
+        // 4. Listeyi yazdır
+        System.out.println("Bağlı Listeye Eklenen 20 Benzersiz Sayı:");
+        Dugum yazdirici = bas;
+        while (yazdirici != null) {
+            System.out.print(yazdirici.veri + " ");
+            yazdirici = yazdirici.sonraki;
+        }
+    }
+}
