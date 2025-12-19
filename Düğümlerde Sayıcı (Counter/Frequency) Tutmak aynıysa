@@ -1,0 +1,65 @@
+class Dugum {
+    int veri;
+    int sayac; // Aynı değerden kaç tane olduğunu tutar
+    Dugum sol, sag;
+
+    public Dugum(int veri) {
+        this.veri = veri;
+        this.sayac = 1; // İlk kez eklendiğinde sayaç 1 olur
+        this.sol = this.sag = null;
+    }
+}
+
+public class SayacliAgac {
+    Dugum kok;
+
+    // Ekleme Metodu
+    public void ekle(int deger) {
+        kok = ekleRecursive(kok, deger);
+    }
+
+    private Dugum ekleRecursive(Dugum mevcut, int deger) {
+        // 1. Eğer yer boşsa yeni düğüm oluştur
+        if (mevcut == null) {
+            return new Dugum(deger);
+        }
+
+        // 2. Eğer değer mevcut düğümle AYNIYSA, sadece sayacı artır
+        if (deger == mevcut.veri) {
+            mevcut.sayac++;
+            return mevcut;
+        }
+
+        // 3. Değer küçükse sola, büyükse sağa git
+        if (deger < mevcut.veri) {
+            mevcut.sol = ekleRecursive(mevcut.sol, deger);
+        } else {
+            mevcut.sag = ekleRecursive(mevcut.sag, deger);
+        }
+
+        return mevcut;
+    }
+
+    // Listeleme Metodu (Küçükten Büyüğe)
+    public void listele(Dugum dugum) {
+        if (dugum != null) {
+            listele(dugum.sol);
+            System.out.println("Değer: " + dugum.veri + " | Tekrar Sayısı: " + dugum.sayac);
+            listele(dugum.sag);
+        }
+    }
+
+    public static void main(String[] args) {
+        SayacliAgac agac = new SayacliAgac();
+        
+        // Örnek: Aynı sayıları defalarca ekleyelim
+        agac.ekle(50);
+        agac.ekle(30);
+        agac.ekle(30); // Tekrar
+        agac.ekle(50); // Tekrar
+        agac.ekle(50); // Tekrar
+        agac.ekle(70);
+
+        agac.listele(agac.kok);
+    }
+}
