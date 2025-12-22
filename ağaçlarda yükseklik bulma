@@ -1,0 +1,20 @@
+public int treeHeight() {
+    return yukseklikHesapla(root);
+}
+
+private int yukseklikHesapla(BinarySearchTreeNode dugum) {
+    if (dugum == null) {
+        return -1; // Boş düğüm yüksekliğe katkı sağlamaz
+    }
+    
+    // Sol ve sağ alt ağaçların yüksekliklerini özyinelemeli olarak bul
+    int solYukseklik = yukseklikHesapla(dugum.left);
+    int sagYukseklik = yukseklikHesapla(dugum.right);
+    
+    // Büyük olan tarafa 1 ekleyerek yukarı gönder
+    if (solYukseklik > sagYukseklik) {
+        return solYukseklik + 1;
+    } else {
+        return sagYukseklik + 1;
+    }
+}
