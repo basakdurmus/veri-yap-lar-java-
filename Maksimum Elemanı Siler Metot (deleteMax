@@ -1,0 +1,25 @@
+public void maksimumuSil() {
+    if (root == null) {
+        return; // Ağaç boşsa işlem yapma
+    }
+
+    // Eğer kökün sağında hiç eleman yoksa, en büyük eleman köktür.
+    if (root.right == null) {
+        root = root.left; // Kökün solunu yeni kök yap (varsa)
+        return;
+    }
+
+    // En sağdaki düğüme gitmek için bir yardımcı ve onun ebeveyni
+    BinarySearchTreeNode ebeveyn = root;
+    BinarySearchTreeNode guncel = root.right;
+
+    // Sağ tarafta gidecek yer kalmayana kadar ilerle
+    while (guncel.right != null) {
+        ebeveyn = guncel;
+        guncel = guncel.right;
+    }
+
+    // En sağdaki düğümü (guncel) siliyoruz. 
+    // Varsa solundaki çocukları, ebeveynin sağına bağlıyoruz.
+    ebeveyn.right = guncel.left;
+}
